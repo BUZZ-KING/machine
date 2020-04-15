@@ -59,7 +59,7 @@ def ml_loop():
         
         # 3.4. Send the instruction for this frame to the game process
         if not ball_served:
-            comm.send_instruction(scene_info.frame, PlatformAction.SERVE_TO_LEFT)
+            comm.send_instruction(scene_info.frame, PlatformAction.SERVE_TO_RIGHT)
             ball_served = True
         else:
             if ball_y_status<0:
@@ -74,21 +74,21 @@ def ml_loop():
                     if ((400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])<200:
                         if (scene_info.platform[0]>(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i]):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
-                        elif (scene_info.platform[0]>(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i]):
+                        elif (scene_info.platform[0]<(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i]):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
                         else:
                             comm.send_instruction(scene_info.frame, PlatformAction.NONE)
                     if ((400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])>200 and ((400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])<400:
                         if (scene_info.platform[0]>(400-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
-                        elif (scene_info.platform[0]>(400-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])):
+                        elif (scene_info.platform[0]<(400-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
                         else:
                             comm.send_instruction(scene_info.frame, PlatformAction.NONE)
                     if ((400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])>400:
                         if (scene_info.platform[0]>((400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])-400):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
-                        elif (scene_info.platform[0]>((400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])-400):
+                        elif (scene_info.platform[0]<((400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])-400):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
                         else:
                             comm.send_instruction(scene_info.frame, PlatformAction.NONE)
@@ -96,21 +96,21 @@ def ml_loop():
                     if ((-(400-ball_b_y[i])/ball_y_status*ball_x_status)+ball_b_x[i])>0:
                         if (scene_info.platform[0]>(-(400-ball_b_y[i])/ball_y_status*ball_x_status)+ball_b_x[i]):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
-                        elif (scene_info.platform[0]>(-(400-ball_b_y[i])/ball_y_status*ball_x_status)+ball_b_x[i]):
+                        elif (scene_info.platform[0]<(-(400-ball_b_y[i])/ball_y_status*ball_x_status)+ball_b_x[i]):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
                         else:
                             comm.send_instruction(scene_info.frame, PlatformAction.NONE)
                     if (-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])>-200 and (-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])<0:
                         if scene_info.platform[0]>(-(-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
-                        elif scene_info.platform[0]>(-(-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])):
+                        elif scene_info.platform[0]<(-(-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
                         else:
                             comm.send_instruction(scene_info.frame, PlatformAction.NONE)
                     if (-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])<-200:
                         if (scene_info.platform[0]>(-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])+400):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
-                        elif (scene_info.platform[0]>(-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])+400):
+                        elif (scene_info.platform[0]<(-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])+400):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
                         else:
                             comm.send_instruction(scene_info.frame, PlatformAction.NONE)
