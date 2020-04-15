@@ -24,15 +24,26 @@ def ml_loop():
     # === Here is the execution order of the loop === #
     # 1. Put the initialization code here.
     ball_served = False
-
+    ball_b_x=[]
+    ball_b_y=[]
+    ball_x_status=0
+    ball_y_status=0
+    i=0
     # 2. Inform the game process that ml process is ready before start the loop.
     comm.ml_ready()
     # 3. Start an endless loop.
     while True:
-
         # 3.1. Receive the scene information sent from the game process.
         scene_info = comm.get_scene_info()
 
+        ball_b_x=ball_b_x+[scene_info.ball[0]]
+        ball_b_y=ball_b_y+[scene_info.ball[1]]
+        if i>2:
+            ball_x_status=ball_b_x[i-1]-ball_b_x[i-2]
+            ball_y_status=ball_b_y[i-1]-ball_b_y[i-2]
+        print("i=",i)
+        print("ball_x_status=",ball_x_status)
+        print("ball_y_status=",ball_y_status)
         # 3.2. If the game is over or passed, the game process will reset
         #      the scene and wait for ml process doing resetting job.
         if scene_info.status == GameStatus.GAME_OVER or \
@@ -50,6 +61,46 @@ def ml_loop():
         if not ball_served:
             comm.send_instruction(scene_info.frame, PlatformAction.SERVE_TO_RIGHT)
             ball_served = True
-        else:    
-             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+        else:
+            if ball_y_status<0:
+                if scene_info.platform[0]>100:
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+                elif scene_info.platform[0]<100:
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
+                else:
+                     comm.send_instruction(scene_info.frame, PlatformAction.NONE)
+            else:
+                if ball_x_status>0:
+                    if  400>(ball_b_x[i]+400-ball_b_y[i])>200:
+                        if scene_info.platform[0]>(scene_info.ball[1]-scene_info.ball[0]):
+                            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+                        elif scene_info.platform[0]<(scene_info.ball[1]-scene_info.ball[0]):
+                            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
+                        else:
+                            comm.send_instruction(scene_info.frame, PlatformAction.NONE)
+                    elif (ball_b_x[i]+400-ball_b_y[i])<200:
+                        if scene_info.platform[0]>(400-ball_b_y[i]+ball_b_x[i]):
+                            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+                        elif scene_info.platform[0]<(400-ball_b_y[i]+ball_b_x[i]):
+                            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
+                        else:
+                            comm.send_instruction(scene_info.frame, PlatformAction.NONE)
+
+                elif ball_x_status<0:
+                    if (400-ball_b_y[i]-ball_b_x[i])<0:
+                        if scene_info.platform[0]>(400-ball_b_y[i]-ball_b_x[i]):
+                            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+                        elif scene_info.platform[0]<(400-ball_b_y[i]-ball_b_x[i]):
+                            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
+                        else:
+                            comm.send_instruction(scene_info.frame, PlatformAction.NONE)
+                    else:
+                        if scene_info.platform[0]>(ball_b_x[i]+ball_b_y[i]-400):
+                            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+                        elif scene_info.platform[0]<(ball_b_x[i]+ball_b_y[i]-400):
+                            comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
+                        else:
+                            comm.send_instruction(scene_info.frame, PlatformAction.NONE)
+        i=i+1
+
                     
