@@ -101,9 +101,9 @@ def ml_loop():
                         else:
                             comm.send_instruction(scene_info.frame, PlatformAction.NONE)
                     if (-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])>200 and (-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])<400:
-                        if (scene_info.platform[0]>-(-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])):
+                        if scene_info.platform[0]>(-(-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
-                        elif (scene_info.platform[0]>-(-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])):
+                        elif scene_info.platform[0]>(-(-(400-ball_b_y[i])/ball_y_status*ball_x_status+ball_b_x[i])):
                             comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
                         else:
                             comm.send_instruction(scene_info.frame, PlatformAction.NONE)
